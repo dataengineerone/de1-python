@@ -5,7 +5,6 @@ from kedro.io import AbstractDataSet, DataSetError
 class ZipDataSet(AbstractDataSet):
     """
     ZipFileDataSet decompresses and extracts files from zip files
-
     """
 
     def __init__(
