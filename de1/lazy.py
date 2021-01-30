@@ -1,5 +1,5 @@
 from typing import Any, Dict, Callable
-from .empty_partitioned_dataset import EmptyPartitionedDataSet
+from .empty import EmptyPartitionedDataSet
 
 
 class LazyPartitionedDataSet(EmptyPartitionedDataSet):
