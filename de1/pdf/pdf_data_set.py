@@ -5,12 +5,6 @@ from typing import List
 from .pdf_page import PDFPage
 
 
-try:
-    import pdfplumber
-except ModuleNotFoundError:
-    raise DataSetError("PDFDataSet requires pdfplumber to be installed.")
-
-
 class PDFDataSet(AbstractDataSet):
     """
     PDFDataSet returns extracted text and tables from
@@ -21,6 +15,11 @@ class PDFDataSet(AbstractDataSet):
             self,
             filepath: str,
     ):
+        try:
+            import pdfplumber
+        except ModuleNotFoundError:
+            raise DataSetError("PDFDataSet requires pdfplumber to be installed.")
+
         self._filepath = filepath
 
     def _load(self) -> List[PDFPage]:
@@ -29,6 +28,11 @@ class PDFDataSet(AbstractDataSet):
         to the particular page that was loaded.
         :return:
         """
+        try:
+            import pdfplumber
+        except ModuleNotFoundError:
+            raise DataSetError("PDFDataSet requires pdfplumber to be installed.")
+
         with pdfplumber.open(self._filepath) as pdf:
             pages = []
             for page in range(len(pdf.pages)):
