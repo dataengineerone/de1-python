@@ -5,6 +5,12 @@ from kedro.io import AbstractDataSet, DataSetError
 from typing import NamedTuple, List
 
 
+try:
+    import pdfplumber
+except ModuleNotFoundError:
+    raise DataSetError("PDFDataSet requires pdfplumber to be installed.")
+
+
 class PDFPage(NamedTuple):
     """
     PDFPage to store read PDF data
@@ -24,15 +30,9 @@ class PDFDataSet(AbstractDataSet):
             filepath: str,
     ):
 
-        try:
-            import pdfplumber
-        except ModuleNotFoundError:
-            raise DataSetError("PDFDataSet requires pdfplumber to be installed.")
-
         self._filepath = filepath
 
     def _load(self) -> List[PDFPage]:
-        import pdfplumber
         with pdfplumber.open(self._filepath) as pdf:
             pages = []
             for page in range(len(pdf.pages)):
