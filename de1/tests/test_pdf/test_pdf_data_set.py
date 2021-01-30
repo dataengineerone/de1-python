@@ -1,21 +1,19 @@
-import os
-from pathlib import PurePath, Path
+from pathlib import Path
 from typing import List
 
 import pytest
-from de1.lazy import LazyPartitionedDataSet
 from de1.pdf import PDFDataSet, PDFPage
 
 
 @pytest.fixture
 def simple_pdf() -> str:
-    source_path = Path(__file__).parent / "fixtures/pdf/simple.pdf"
+    source_path = Path(__file__).parent / "data/simple.pdf"
     return source_path.as_posix()
 
 
 @pytest.fixture
 def table_pdf() -> str:
-    source_path = Path(__file__).parent / "fixtures/pdf/table.pdf"
+    source_path = Path(__file__).parent / "data/table.pdf"
     return source_path.as_posix()
 
 

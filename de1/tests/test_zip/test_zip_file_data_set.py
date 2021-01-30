@@ -10,19 +10,19 @@ from de1.zip import ZipFileDataSet
 
 @pytest.fixture
 def simple_zip() -> str:
-    source_path = Path(__file__).parent / "fixtures/zip/simple_pdf.zip"
+    source_path = Path(__file__).parent / "data/simple_pdf.zip"
     return source_path.as_posix()
 
 
 @pytest.fixture
 def ignored_zip() -> str:
-    source_path = Path(__file__).parent / "fixtures/zip/ignored_file.zip"
+    source_path = Path(__file__).parent / "data/ignored_file.zip"
     return source_path.as_posix()
 
 
 @pytest.fixture
 def two_pdfs_zip() -> str:
-    source_path = Path(__file__).parent / "fixtures/zip/two_pdfs.zip"
+    source_path = Path(__file__).parent / "data/two_pdfs.zip"
     return source_path.as_posix()
 
 

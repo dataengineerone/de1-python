@@ -1,20 +1,14 @@
 from typing import Dict, Any
 from kedro.io import AbstractDataSet, DataSetError
-from typing import NamedTuple, List
+from typing import List
+
+from .pdf_page import PDFPage
 
 
 try:
     import pdfplumber
 except ModuleNotFoundError:
     raise DataSetError("PDFDataSet requires pdfplumber to be installed.")
-
-
-class PDFPage(NamedTuple):
-    """
-    PDFPage to store read PDF data
-    """
-    text: str
-    table: List
 
 
 class PDFDataSet(AbstractDataSet):
