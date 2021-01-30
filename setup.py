@@ -5,15 +5,15 @@ with open("README.md", "r") as fh:
 
 setup(
     name="de1",
-    version="0.0.4",
+    version="0.0.5",
     url="https://github.com/dataengineerone/de1-python",
     author="DataEngineerOne",
     author_email="dataengineerone@gmail.com",
     description="DE1's curated collection of kedro tools.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=["de1"],
-    zip_safe=False,
+    packages=find_packages(),
+    zip_safe=True,
     include_package_data=True,
     license="MIT",
     install_requires=[
