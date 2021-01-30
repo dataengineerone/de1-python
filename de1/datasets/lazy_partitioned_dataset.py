@@ -1,8 +1,8 @@
 from typing import Any, Dict, Callable
-from kedro.io import PartitionedDataSet
+from .empty_partitioned_dataset import EmptyPartitionedDataSet
 
 
-class LazyPartitionedDataSet(PartitionedDataSet):
+class LazyPartitionedDataSet(EmptyPartitionedDataSet):
     """
     LazyPartitionedDataSet allows users to save data in an incremental way,
     without requiring all data to be loaded at the same time in order to be saved.

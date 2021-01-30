@@ -2,9 +2,11 @@ from typing import Any, Dict
 from kedro.io import AbstractDataSet, DataSetError
 
 
-class ZipDataSet(AbstractDataSet):
+class ZipFileDataSet(AbstractDataSet):
     """
-    ZipFileDataSet decompresses and extracts files from zip files
+    ZipFileDataSet decompresses and extracts files from zip files.
+    Expects to return a single file from the unzipped dataset,
+    and supports multiple methods for filtering sets of files.
     """
 
     def __init__(
@@ -60,5 +62,7 @@ class ZipDataSet(AbstractDataSet):
         return dict(
             filepath=self._filepath,
             filename=self._filename,
+            filename_suffix=self._filename_suffix,
+            ignored_prefixes=self._ignored_prefixes,
         )
 

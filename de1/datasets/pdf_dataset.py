@@ -21,18 +21,22 @@ class PDFPage(NamedTuple):
 
 class PDFDataSet(AbstractDataSet):
     """
-    PDFFileDataSet returns extracted text and tables from
-    given pdf files
+    PDFDataSet returns extracted text and tables from
+    given pdf files, wrapping them in a PDFPage object.
     """
 
     def __init__(
             self,
             filepath: str,
     ):
-
         self._filepath = filepath
 
     def _load(self) -> List[PDFPage]:
+        """
+        Loads a list of PDFPage objects, with each index corresponding
+        to the particular page that was loaded.
+        :return:
+        """
         with pdfplumber.open(self._filepath) as pdf:
             pages = []
             for page in range(len(pdf.pages)):

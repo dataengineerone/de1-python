@@ -6,11 +6,14 @@ from kedro.io import PartitionedDataSet, AbstractDataSet
 
 class EmptyPartitionedDataSet(PartitionedDataSet):
     """
-    EmptyPartitionedDataSet is like a PartitionedDataSet that allows reading
-    from a location that has no files or data
+    EmptyPartitionedDataSet is exactly the same as a PartitionedDataSet
+    except that it allows reading from a location that has no files or data.
+
+    If a location does not exist, this dataset will create the path.
+    If a location is empty, this dataset will return an empty dictionary.
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
             self,
             path: str,
             dataset: Union[str, Type[AbstractDataSet], Dict[str, Any]],
