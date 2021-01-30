@@ -1,0 +1,64 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="2">
+            <item index="0" class="java.lang.String" itemvalue="objcrypt" />
+            <item index="1" class="java.lang.String" itemvalue="kedro" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+          <option value="N803" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredNames">
+        <list>
+          <option value="type" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="pantheon_backend.graph.models.Node.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.NodeEdge.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.NodeEdge.objects" />
+          <option value="pantheon_backend.graph.models.Node.objects" />
+          <option value="pantheon_backend.graph.models.Node.*" />
+          <option value="pantheon_backend.graph.models.ChartBlob.objects" />
+          <option value="pantheon_backend.graph.models.Chart.objects" />
+          <option value="pantheon_backend.graph.models.DictionaryColumn.objects" />
+          <option value="pantheon_backend.graph.models.Secret.objects" />
+          <option value="pantheon_backend.graph.models.Dictionary.objects" />
+          <option value="pantheon_backend.graph.models.Dictionary.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.DictionaryColumn.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.StickyNote.objects" />
+          <option value="pantheon_backend.graph.models.StickyNote.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.Tag.objects" />
+          <option value="pantheon_backend.graph.models.Sticky.objects" />
+          <option value="pantheon_backend.graph.models.Tag.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.Chart.DoesNotExist" />
+          <option value="pantheon_backend.graph.models.Sticky.DoesNotExist" />
+          <option value="django.db.models.fields.related.ForeignKey.*" />
+          <option value="pantheon_backend.graph.models.DataCheckOutput.object" />
+          <option value="pantheon_backend.graph.models.DataCheckOutput.objects" />
+          <option value="pantheon_backend.graph.models.DataCheckGuard.objects" />
+          <option value="pantheon_backend.graph.models.DataCheck.objects" />
+          <option value="pantheon_backend.graph.models.Secret.object" />
+          <option value="pantheon_backend2.events.models.Event.objects" />
+          <option value="dict.get" />
+          <option value="cv2.*" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
