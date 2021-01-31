@@ -27,8 +27,8 @@ class ZipFileDataSet(AbstractDataSet):
     def __init__(
             self,
             filepath: str,
-            filename: str = None,
-            filename_suffix: str = None,
+            zipped_filename: str = None,
+            zipped_filename_suffix: str = None,
             ignored_prefixes: str = None,
             credentials: Dict[str, str] = None,
             dataset: Optional[Union[str, Type[AbstractDataSet], Dict[str, Any]]] = None,
@@ -56,8 +56,8 @@ class ZipFileDataSet(AbstractDataSet):
             )
 
         self._filepath = filepath
-        self._filename = filename
-        self._filename_suffix = filename_suffix
+        self._zipped_filename = zipped_filename
+        self._zipped_filename_suffix = zipped_filename_suffix
         self._ignored_prefixes = ignored_prefixes or ['_', '.']
         credentials = credentials or {}
         self._password = credentials.get('password', credentials.get('pwd'))
@@ -73,22 +73,22 @@ class ZipFileDataSet(AbstractDataSet):
         import zipfile
         with zipfile.ZipFile(self._filepath) as zipped:
             namelist = zipped.namelist()
-            if self._filename_suffix is not None:
+            if self._zipped_filename_suffix is not None:
                 namelist = [
-                    name for name in namelist if name.lower().endswith(self._filename_suffix)
+                    name for name in namelist if name.lower().endswith(self._zipped_filename_suffix)
                 ]
             namelist = [
                 name
                 for name in namelist if not self._is_ignored_prefix(name)
             ]
-            if len(namelist) > 1 and self._filename is None:
+            if len(namelist) > 1 and self._zipped_filename is None:
                 raise DataSetError(f'Multiple files found! Please specify which file to extract: {namelist}')
             if len(namelist) <= 0:
                 raise DataSetError(f'No files found in the archive!')
 
             target_filename = namelist[0]
-            if self._filename is not None:
-                target_filename = self._filename
+            if self._zipped_filename is not None:
+                target_filename = self._zipped_filename
 
             with zipped.open(target_filename, pwd=self._password) as zipped_file:
                 temp_unzipped_dir = tempfile.mkdtemp()
@@ -108,8 +108,8 @@ class ZipFileDataSet(AbstractDataSet):
     def _describe(self) -> Dict[str, Any]:
         return dict(
             filepath=self._filepath,
-            filename=self._filename,
-            filename_suffix=self._filename_suffix,
+            zipped_filename=self._zipped_filename,
+            zipped_filename_suffix=self._zipped_filename_suffix,
             ignored_prefixes=self._ignored_prefixes,
         )
 
