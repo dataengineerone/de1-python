@@ -1,6 +1,4 @@
-import os
-from pathlib import PurePath, Path
-from typing import List
+from pathlib import Path
 
 import pytest
 from kedro.io import DataSetError
@@ -27,6 +25,12 @@ def two_pdfs_zip() -> str:
 
 
 @pytest.fixture
+def csv_zip() -> str:
+    source_path = Path(__file__).parent / "data/csv.zip"
+    return source_path.as_posix()
+
+
+@pytest.fixture
 def simple_zip_data_set(simple_zip):
     return ZipFileDataSet(filepath=simple_zip)
 
@@ -44,6 +48,11 @@ def invalid_two_pdfs_zip_data_set(two_pdfs_zip):
 @pytest.fixture
 def valid_two_pdfs_zip_data_set(two_pdfs_zip):
     return ZipFileDataSet(filepath=two_pdfs_zip, filename="simple.pdf")
+
+
+@pytest.fixture
+def csv_zip_data_set(csv_zip):
+    return ZipFileDataSet(filepath=csv_zip, dataset="pandas.CSVDataSet")
 
 
 class TestZipFileDataSet:
@@ -79,3 +88,10 @@ class TestZipFileDataSet:
     ):
         with pytest.raises(DataSetError):
             assert invalid_two_pdfs_zip_data_set.load()
+
+    def test_csv_dataset(
+            self,
+            csv_zip_data_set: ZipFileDataSet,
+    ):
+        csv_data = csv_zip_data_set.load()
+        assert len(csv_data) == 2

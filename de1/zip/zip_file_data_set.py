@@ -1,5 +1,11 @@
-from typing import Any, Dict
+import os
+import tempfile
+from copy import deepcopy
+from typing import Any, Dict, Type, Union, Optional
+from warnings import warn
+
 from kedro.io import AbstractDataSet, DataSetError
+from kedro.io.core import parse_dataset_definition, VERSION_KEY, VERSIONED_FLAG_KEY
 
 
 class ZipFileDataSet(AbstractDataSet):
@@ -9,6 +15,15 @@ class ZipFileDataSet(AbstractDataSet):
     and supports multiple methods for filtering sets of files.
     """
 
+    DEFAULT_DATASET = {
+        "type": "text.TextDataSet",
+        "fs_args": {
+            "open_args_load": {
+                "mode": "rb",
+            }
+        }
+    }
+
     def __init__(
             self,
             filepath: str,
@@ -16,7 +31,30 @@ class ZipFileDataSet(AbstractDataSet):
             filename_suffix: str = None,
             ignored_prefixes: str = None,
             credentials: Dict[str, str] = None,
+            dataset: Optional[Union[str, Type[AbstractDataSet], Dict[str, Any]]] = None,
+            filepath_arg: str = 'filepath',
     ):
+
+        if dataset is None:
+            dataset = ZipFileDataSet.DEFAULT_DATASET
+
+        dataset = dataset if isinstance(dataset, dict) else {"type": dataset}
+        self._dataset_type, self._dataset_config = parse_dataset_definition(dataset)
+        if VERSION_KEY in self._dataset_config:
+            raise DataSetError(
+                "`{}` does not support versioning of the underlying dataset. "
+                "Please remove `{}` flag from the dataset definition.".format(
+                    self.__class__.__name__, VERSIONED_FLAG_KEY
+                )
+            )
+
+        self._filepath_arg = filepath_arg
+        if self._filepath_arg in self._dataset_config:
+            warn(
+                "`{}` key must not be specified in the dataset definition as it "
+                "will be overwritten by partition path".format(self._filepath_arg)
+            )
+
         self._filepath = filepath
         self._filename = filename
         self._filename_suffix = filename_suffix
@@ -53,7 +91,16 @@ class ZipFileDataSet(AbstractDataSet):
                 target_filename = self._filename
 
             with zipped.open(target_filename, pwd=self._password) as zipped_file:
-                return zipped_file.read()
+                temp_unzipped_dir = tempfile.mkdtemp()
+                temp_unzipped_filepath = os.path.join(temp_unzipped_dir, "temp_file")
+                with open(temp_unzipped_filepath, "wb") as temp_unzipped_file:
+                    temp_unzipped_file.write(zipped_file.read())
+
+                kwargs = deepcopy(self._dataset_config)
+                kwargs[self._filepath_arg] = temp_unzipped_filepath
+                dataset = self._dataset_type(**kwargs)
+                os.remove(temp_unzipped_filepath)
+                return dataset.load()
 
     def _save(self, data: Any) -> None:
         raise DataSetError(f'Saving is unsupported')

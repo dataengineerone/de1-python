@@ -43,7 +43,8 @@ invoice_pdf:
 
 ## ZipFileDataSet
 
-A dataset that extracts a signle file from a zip file and returns the bytes.
+A dataset that extracts a single file from a zip file and returns the bytes.
+By default will return a byte array, but a dataset can be passed in to change unzip behavior.
 
 ```
 invoice_pdf:
