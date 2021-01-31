@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="de1",
-    version="0.1.0",
+    version="0.1.1",
     url="https://github.com/dataengineerone/de1-python",
     author="DataEngineerOne",
     author_email="dataengineerone@gmail.com",
