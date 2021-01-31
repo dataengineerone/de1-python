@@ -30,6 +30,7 @@ class ZipFileDataSet(AbstractDataSet):
             zipped_filename: str = None,
             zipped_filename_suffix: str = None,
             ignored_prefixes: str = None,
+            ignored_suffixes: str = None,
             credentials: Dict[str, str] = None,
             dataset: Optional[Union[str, Type[AbstractDataSet], Dict[str, Any]]] = None,
             filepath_arg: str = 'filepath',
@@ -59,15 +60,18 @@ class ZipFileDataSet(AbstractDataSet):
         self._zipped_filename = zipped_filename
         self._zipped_filename_suffix = zipped_filename_suffix
         self._ignored_prefixes = ignored_prefixes or ['_', '.']
+        self._ignored_suffixes = (ignored_suffixes or []) + ['/']
         credentials = credentials or {}
         self._password = credentials.get('password', credentials.get('pwd'))
 
-    def _is_ignored_prefix(self, name):
+    def _is_ignored(self, name):
         for ignored_prefix in self._ignored_prefixes:
             if name.startswith(ignored_prefix):
                 return True
-        else:
-            return False
+        for ignored_suffix in self._ignored_suffixes:
+            if name.endswith(ignored_suffix):
+                return True
+        return False
 
     def _load(self) -> bytes:
         import zipfile
@@ -79,7 +83,7 @@ class ZipFileDataSet(AbstractDataSet):
                 ]
             namelist = [
                 name
-                for name in namelist if not self._is_ignored_prefix(name)
+                for name in namelist if not self._is_ignored(name)
             ]
             if len(namelist) > 1 and self._zipped_filename is None:
                 raise DataSetError(f'Multiple files found! Please specify which file to extract: {namelist}')
@@ -112,5 +116,6 @@ class ZipFileDataSet(AbstractDataSet):
             zipped_filename=self._zipped_filename,
             zipped_filename_suffix=self._zipped_filename_suffix,
             ignored_prefixes=self._ignored_prefixes,
+            ignored_suffxies=self._ignored_suffixes,
         )
 

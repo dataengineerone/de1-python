@@ -31,6 +31,12 @@ def csv_zip() -> str:
 
 
 @pytest.fixture
+def dir_zip() -> str:
+    source_path = Path(__file__).parent / "data/dir.zip"
+    return source_path.as_posix()
+
+
+@pytest.fixture
 def simple_zip_data_set(simple_zip):
     return ZipFileDataSet(filepath=simple_zip)
 
@@ -53,6 +59,11 @@ def valid_two_pdfs_zip_data_set(two_pdfs_zip):
 @pytest.fixture
 def csv_zip_data_set(csv_zip):
     return ZipFileDataSet(filepath=csv_zip, dataset="pandas.CSVDataSet")
+
+
+@pytest.fixture
+def dir_zip_data_set(dir_zip):
+    return ZipFileDataSet(filepath=dir_zip)
 
 
 class TestZipFileDataSet:
@@ -95,3 +106,12 @@ class TestZipFileDataSet:
     ):
         csv_data = csv_zip_data_set.load()
         assert len(csv_data) == 2
+
+    def test_dir_dataset(
+            self,
+            simple_zip_data_set: ZipFileDataSet,
+            dir_zip_data_set: ZipFileDataSet,
+    ):
+        simple_pdf = simple_zip_data_set.load()
+        dir_data = dir_zip_data_set.load()
+        assert simple_pdf == dir_data
