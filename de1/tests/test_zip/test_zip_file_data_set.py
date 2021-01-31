@@ -47,7 +47,7 @@ def invalid_two_pdfs_zip_data_set(two_pdfs_zip):
 
 @pytest.fixture
 def valid_two_pdfs_zip_data_set(two_pdfs_zip):
-    return ZipFileDataSet(filepath=two_pdfs_zip, filename="simple.pdf")
+    return ZipFileDataSet(filepath=two_pdfs_zip, zipped_filename="simple.pdf")
 
 
 @pytest.fixture
