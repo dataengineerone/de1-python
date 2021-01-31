@@ -99,8 +99,9 @@ class ZipFileDataSet(AbstractDataSet):
                 kwargs = deepcopy(self._dataset_config)
                 kwargs[self._filepath_arg] = temp_unzipped_filepath
                 dataset = self._dataset_type(**kwargs)
+                data = dataset.load()
                 os.remove(temp_unzipped_filepath)
-                return dataset.load()
+                return data
 
     def _save(self, data: Any) -> None:
         raise DataSetError(f'Saving is unsupported')
