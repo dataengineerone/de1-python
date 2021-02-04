@@ -4,6 +4,8 @@ import urllib.parse
 
 import pandas
 import requests
+
+from threading import Semaphore, Thread
 from kedro.io import AbstractDataSet, DataSetError
 
 
@@ -34,6 +36,8 @@ class AirtableDataSet(AbstractDataSet):
         self._api_key = credentials['api_key']
         self._base_id = credentials['base_id']
 
+        self._api_semaphore = Semaphore(5)
+
     def _page_url(self, offset=''):
         pagination_params = urllib.parse.urlencode({
             'pageSize': 100,
@@ -51,10 +55,27 @@ class AirtableDataSet(AbstractDataSet):
             'Authorization': f'Bearer {self._api_key}'
         }
 
+    def _gen_releaser(self):
+        semaphores = self._api_semaphore
+        logger = self._logger
+
+        def _releaser():
+            logger.debug("Waiting Release Sem")
+            time.sleep(1)
+            logger.debug("Releasing Sem")
+            semaphores.release()
+
+        return _releaser
+
     def _call_api(self, offset=''):
         url = self._page_url(offset=offset)
         while True:
+            self._api_semaphore.acquire(timeout=999999)
+            self._logger.debug('Ack Sem')
+            t = Thread(target=self._gen_releaser())
+            t.daemon = True
             resp = requests.get(url, headers=self._headers)
+            t.start()
             if resp.status_code == 429:
                 time.sleep(30)
                 continue
