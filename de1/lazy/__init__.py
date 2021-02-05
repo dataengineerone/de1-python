@@ -1,4 +1,4 @@
-from .lazy_partitioend_data_set import LazyPartitionedDataSet
+from .lazy_partitioned_data_set import LazyPartitionedDataSet
 
 
 __all__ = [
