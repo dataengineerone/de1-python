@@ -13,6 +13,10 @@ class AirtableException(DataSetError):
     pass
 
 
+AIRTABLE_RECORD_ID_COLUMN = '__airtable_id'
+AIRTABLE_CREATED_TIME_COLUMN = '__airtable_created_time'
+
+
 class AirtableDataSet(AbstractDataSet):
     BASE_API = 'https://api.airtable.com/v0'
 
@@ -105,8 +109,8 @@ class AirtableDataSet(AbstractDataSet):
         return [
             {
                 **record['fields'],
-                '__airtable_id': record['id'],
-                '__airtable_created_time': record['createdTime'],
+                AIRTABLE_RECORD_ID_COLUMN: record['id'],
+                AIRTABLE_CREATED_TIME_COLUMN: record['createdTime'],
              }
             for record in raw_records
         ]
@@ -125,4 +129,3 @@ class AirtableDataSet(AbstractDataSet):
             view=self._view,
             base_id=self._base_id,
         )
-
